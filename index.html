@@ -1,114 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cardano Knowledge Quiz</title>
   <style>
     :root {
-      --bg-color: #0d0d0d;
-      --card-bg: #1a1a1a;
-      --text-color: #ffffff;
-      --primary-color: #007bff;
-      --primary-hover: #0056b3;
-      --shadow-color: rgba(0, 123, 255, 0.5);
-      --border-radius: 8px;
-      --transition-speed: 0.3s;
+      --bg: #0d0d0d;
+      --card: #1a1a1a;
+      --txt: #fff;
+      --prim: #007bff;
+      --prim-h: #0056b3;
+      --shadow: rgba(0,123,255,0.5);
+      --radius: 8px;
+      --trans: 0.3s;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin:0; padding:0 }
     body {
-      font-family: 'Arial', sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      text-align: center;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
+      background: var(--bg);
+      color: var(--txt);
+      font-family: Arial, sans-serif;
+      display:flex; flex-direction:column; align-items:center;
+      padding:20px; min-height:100vh; text-align:center;
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+    h1 { font-size:2rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:1px }
     .pregunta, .resultado {
-      width: 100%;
-      max-width: 600px;
-      background-color: var(--card-bg);
-      padding: 20px;
-      border-radius: var(--border-radius);
-      box-shadow: 0 4px 15px var(--shadow-color);
-      margin-bottom: 20px;
+      background: var(--card);
+      padding:20px; border-radius:var(--radius);
+      box-shadow:0 4px 15px var(--shadow);
+      width:100%; max-width:600px; margin-bottom:20px;
     }
-    #opciones {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
+    #opciones { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:15px }
     button {
-      flex: 1 1 calc(50% - 20px);
-      min-width: 120px;
-      padding: 12px 20px;
-      border: none;
-      background-color: var(--primary-color);
-      color: var(--text-color);
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: background-color var(--transition-speed), transform var(--transition-speed);
-      font-size: 1rem;
-      font-weight: bold;
+      flex:1 1 calc(50% - 20px);
+      min-width:120px; padding:12px 20px; border:none;
+      background:var(--prim); color:var(--txt);
+      border-radius:var(--radius); cursor:pointer;
+      transition:background var(--trans),transform var(--trans);
+      font-weight:bold;
     }
-    button:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
+    button:hover { background:var(--prim-h); transform:translateY(-2px) }
+    .resultado img {
+      display:block; margin:0 auto 15px;
+      max-width:100%; border-radius:var(--radius);
     }
-    #acciones {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .resultado h2 {
-      font-size: 1.75rem;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-    .resultado p {
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-      button {
-        flex: 1 1 100%;
-      }
-      #acciones {
-        flex-direction: column;
-      }
+    .resultado h2 { font-size:1.75rem; margin-bottom:10px; text-transform:uppercase }
+    .resultado p { line-height:1.5 }
+    @media(max-width:480px){
+      h1{font-size:1.5rem}
+      button{flex:1 1 100%}
     }
   </style>
 </head>
 <body>
   <h1>How much do you really know about the Cardano universe?</h1>
 
-  <!-- Contenedor de preguntas -->
   <div class="pregunta" id="pregunta">
     <p id="textoPregunta"></p>
     <div id="opciones"></div>
   </div>
 
-  <!-- Contenedor de resultado -->
-  <div class="resultado" id="resultado" style="display: none;">
+  <div class="resultado" id="resultado" style="display:none">
+    <img id="imagenResultado" src="" alt="Personaje" />
     <h2 id="tituloResultado"></h2>
     <p id="descripcionResultado"></p>
     <div id="acciones">
@@ -118,122 +71,114 @@
   </div>
 
   <script>
-    // Preguntas: la original primera pasa al final
+    // datos del quiz
     const preguntas = [
+      { texto:"Which value guides your ADA journey?", opciones:[
+        "Mathematical reason and logic (Cardano / Plutus)",
+        "Absolute decentralization (Shelley)",
+        "Critical thinking and evolution (Voltaire)"
+      ]},
+      { texto:"If you ruled as a Cardano deity, what would your power be?", opciones:[
+        "Controlling all crypto Epochs",
+        "Forging fair and eternal contracts (Plutus)",
+        "Multiplying Hydra heads to scale the chain"
+      ]},
+      { texto:"What role would you play in the ecosystem?", opciones:[
+        "Smart contract builder (Goguen)",
+        "Node and block guardian (SPO)",
+        "Future oracle of Catalyst"
+      ]},
+      { texto:"If you could summon one ally, who would it be?", opciones:[
+        "Ada Lovelace: vision, precision, and elegance",
+        "Hydra: power, speed, and regeneration",
+        "Charles: the founding prophet and eternal guide"
+      ]},
+      { texto:"Which Cardano era do you identify with most?", opciones:[
+        "Byron: the foundation of knowledge",
+        "Shelley: decentralization as divine law",
+        "Voltaire: your voice shapes the future"
+      ]},
+      { texto:"Which of these Cardano memecoins will lead the ecosystem in 2025?", opciones:[
+        "$HOSKY – the stray dog with a loyal army",
+        "$SNEK – the fast, viral snake",
+        "$BOOK – the sacred book of degenerates",
+        "$SUPERIOR – the mythological cult dominating the Cardano-verse"
+      ]}
+    ];
+
+    // resultados con ruta a PNG en carpeta /images
+    const resultados = [
       {
-        texto: "Which value guides your ADA journey?",
-        opciones: [
-          "Mathematical reason and logic (Cardano / Plutus)",
-          "Absolute decentralization (Shelley)",
-          "Critical thinking and evolution (Voltaire)"
-        ]
+        titulo:"You are BYRON, the Founder of Foundations",
+        descripcion:"You represent the beginning, mathematical principles, and the solid base upon which everything is built.",
+        imagen:"images/byron.png"
       },
       {
-        texto: "If you ruled as a Cardano deity, what would your power be?",
-        opciones: [
-          "Controlling all crypto Epochs",
-          "Forging fair and eternal contracts (Plutus)",
-          "Multiplying Hydra heads to scale the chain"
-        ]
+        titulo:"You are PLUTUS, the Architect of Code",
+        descripcion:"Your mind is logical, precise, and creative. You translate will into immutable contracts.",
+        imagen:"images/plutus.png"
       },
       {
-        texto: "What role would you play in the ecosystem?",
-        opciones: [
-          "Smart contract builder (Goguen)",
-          "Node and block guardian (SPO)",
-          "Future oracle of Catalyst"
-        ]
+        titulo:"You are CHARLES, the Prophet of the Chain",
+        descripcion:"You are vision, origin, and future. Where others see blocks, you see decentralized civilizations.",
+        imagen:"images/charles.png"
       },
       {
-        texto: "If you could summon one ally, who would it be?",
-        opciones: [
-          "Ada Lovelace: vision, precision, and elegance",
-          "Hydra: power, speed, and regeneration",
-          "Charles: the founding prophet and eternal guide"
-        ]
+        titulo:"You are SHELLEY, the Guardian of Decentralization",
+        descripcion:"You lead without imposing, believing in collective power and decentralization.",
+        imagen:"images/shelley.png"
       },
       {
-        texto: "Which Cardano era do you identify with most?",
-        opciones: [
-          "Byron: the foundation of knowledge",
-          "Shelley: decentralization as divine law",
-          "Voltaire: your voice shapes the future"
-        ]
+        titulo:"You are VOLTAIRE, the Oracle of Governance",
+        descripcion:"Your voice guides the ecosystem. You forge Cardano's future through ideas and proposals.",
+        imagen:"images/voltaire.png"
       },
       {
-        texto: "Which of these Cardano memecoins will lead the ecosystem in 2025?",
-        opciones: [
-          "$HOSKY – the stray dog with a loyal army",
-          "$SNEK – the fast, viral snake",
-          "$BOOK – the sacred book of degenerates",
-          "$SUPERIOR – the mythological cult dominating the Cardano-verse"
-        ]
+        titulo:"You are HYDRA, the Strategist of Scalability",
+        descripcion:"You move with speed, strength and precision. You scale what others cannot.",
+        imagen:"images/hydra.png"
       }
     ];
 
-    const resultados = [
-      { titulo: "You are BYRON, the Founder of Foundations", descripcion: "You represent the beginning, mathematical principles, and the solid base upon which everything is built. Your strength lies in structure, clarity, and long-term vision." },
-      { titulo: "You are PLUTUS, the Architect of Code", descripcion: "Your mind is logical, precise, and creative. Where others see complexity, you see elegant functions. You translate will into immutable contracts." },
-      { titulo: "You are CHARLES, the Prophet of the Chain", descripcion: "You are vision, origin, and future. Where others see blocks, you see decentralized civilizations." },
-      { titulo: "You are SHELLEY, the Guardian of Decentralization", descripcion: "You are the silent force upholding the network. Every block and validation honors you. You lead without imposing, and you believe in collective power." },
-      { titulo: "You are VOLTAIRE, the Oracle of Governance", descripcion: "Your voice guides the ecosystem. Your power is in community, voting, and vision. You forge Cardano's future through ideas and proposals." },
-      { titulo: "You are HYDRA, the Strategist of Scalability", descripcion: "You don't have one head, but many solutions. You move with speed, strength, and precision. You scale what others cannot and lead through innovation." }
-    ];
+    let respuestas = [], idx=0;
 
-    let respuestas = [];
-    let preguntaActual = 0;
-
-    function mostrarPregunta() {
-      const pregunta = preguntas[preguntaActual];
-      document.getElementById("textoPregunta").innerText = pregunta.texto;
-      const opcionesDiv = document.getElementById("opciones");
-      opcionesDiv.innerHTML = "";
-      pregunta.opciones.forEach((opcion, i) => {
-        const btn = document.createElement("button");
-        btn.innerText = opcion;
-        btn.onclick = () => responder(i);
-        opcionesDiv.appendChild(btn);
+    function mostrarPregunta(){
+      const q = preguntas[idx];
+      document.getElementById("textoPregunta").innerText = q.texto;
+      const ops = document.getElementById("opciones");
+      ops.innerHTML="";
+      q.opciones.forEach((o,i)=>{
+        const b=document.createElement("button");
+        b.innerText=o;
+        b.onclick=()=>{respuestas.push(i); idx++; idx<preguntas.length?mostrarPregunta():mostrarResultado()};
+        ops.appendChild(b);
       });
     }
 
-    function responder(indice) {
-      respuestas.push(indice);
-      preguntaActual++;
-      if (preguntaActual < preguntas.length) {
-        mostrarPregunta();
-      } else {
-        mostrarResultado();
-      }
+    function mostrarResultado(){
+      document.getElementById("pregunta").style.display="none";
+      const counts = respuestas.reduce((a,i)=>{a[i]=(a[i]||0)+1;return a},[]);
+      const winner = counts.indexOf(Math.max(...counts));
+      const r = resultados[winner];
+      const img = document.getElementById("imagenResultado");
+      img.src = r.imagen; img.alt = r.titulo;
+      document.getElementById("tituloResultado").innerText = r.titulo;
+      document.getElementById("descripcionResultado").innerText = r.descripcion;
+      document.getElementById("resultado").style.display="block";
     }
 
-    function mostrarResultado() {
-      document.getElementById("pregunta").style.display = "none";
-      const conteo = respuestas.reduce((acc, i) => { acc[i] = (acc[i] || 0) + 1; return acc; }, []);
-      const resultadoIndex = conteo.indexOf(Math.max(...conteo));
-      const resultado = resultados[resultadoIndex];
-      document.getElementById("tituloResultado").innerText = resultado.titulo;
-      document.getElementById("descripcionResultado").innerText = resultado.descripcion;
-      document.getElementById("resultado").style.display = "block";
-    }
-
-    function reiniciar() {
-      respuestas = [];
-      preguntaActual = 0;
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("pregunta").style.display = "block";
+    function reiniciar(){
+      respuestas=[]; idx=0;
+      document.getElementById("resultado").style.display="none";
+      document.getElementById("pregunta").style.display="block";
       mostrarPregunta();
     }
 
-    function compartirEnX() {
-      const rawTitle = document.getElementById("tituloResultado").innerText;
-      const titulo = rawTitle.replace(/^you are\s+/i, "").trim();
-      const texto = encodeURIComponent(
-        `My Cardano result: ${titulo}. Yours? 👉 https://tuweb.com/test`
-      );
-      window.open(`https://twitter.com/intent/tweet?text=${texto}`, "_blank");
+    function compartirEnX(){
+      const t = document.getElementById("tituloResultado").innerText.replace(/^You are\s+/i,"");
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`My Cardano result: ${t}. Yours?`)}"`);
     }
 
-    // Iniciar quiz
     mostrarPregunta();
   </script>
 </body>
