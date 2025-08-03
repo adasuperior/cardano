@@ -6,79 +6,51 @@
   <title>Cardano Knowledge Quiz</title>
   <style>
     :root {
-      --bg: #0d0d0d;
-      --card: #1a1a1a;
-      --txt: #fff;
-      --prim: #007bff;
-      --prim-h: #0056b3;
-      --shadow: rgba(0,123,255,0.5);
-      --radius: 8px;
-      --trans: 0.3s;
+      --bg: #0d0d0d; --card: #1a1a1a; --txt: #fff;
+      --prim: #007bff; --prim-h: #0056b3; --shadow: rgba(0,123,255,0.5);
+      --radius: 8px; --trans: 0.3s;
     }
     * { box-sizing: border-box; margin:0; padding:0 }
     body {
-      background: var(--bg);
-      color: var(--txt);
+      background: var(--bg); color: var(--txt);
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      min-height: 100vh;
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 20px; min-height: 100vh; text-align: center;
     }
     h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-size: 2rem; margin-bottom: 1rem;
+      text-transform: uppercase; letter-spacing: 1px;
     }
     .pregunta, .resultado {
       background: var(--card);
-      padding: 20px;
-      border-radius: var(--radius);
+      padding: 20px; border-radius: var(--radius);
       box-shadow: 0 4px 15px var(--shadow);
-      width: 100%;
-      max-width: 600px;
-      margin-bottom: 20px;
+      width: 100%; max-width: 600px; margin-bottom: 20px;
     }
     #opciones {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 15px;
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; margin-top: 15px;
     }
     button {
-      flex: 1 1 calc(50% - 20px);
-      min-width: 120px;
-      padding: 12px 20px;
-      border: none;
-      background: var(--prim);
-      color: var(--txt);
-      border-radius: var(--radius);
-      cursor: pointer;
+      flex: 1 1 calc(50% - 20px); min-width: 120px;
+      padding: 12px 20px; border: none;
+      background: var(--prim); color: var(--txt);
+      border-radius: var(--radius); cursor: pointer;
       transition: background var(--trans), transform var(--trans);
       font-weight: bold;
     }
     button:hover {
-      background: var(--prim-h);
-      transform: translateY(-2px);
+      background: var(--prim-h); transform: translateY(-2px);
     }
     .resultado img {
-      display: block;
-      margin: 0 auto 15px;
-      max-width: 100%;
-      border-radius: var(--radius);
+      display: block; margin: 0 auto 15px;
+      max-width: 100%; border-radius: var(--radius);
     }
     .resultado h2 {
-      font-size: 1.75rem;
-      margin-bottom: 10px;
+      font-size: 1.75rem; margin-bottom: 10px;
       text-transform: uppercase;
     }
-    .resultado p {
-      line-height: 1.5;
-    }
+    .resultado p { line-height: 1.5 }
     @media(max-width: 480px) {
       h1 { font-size: 1.5rem }
       button { flex: 1 1 100% }
@@ -106,6 +78,7 @@
   <script>
     const QUIZ_URL = "https://penascosa.github.io/cardano/";
 
+    // 5 preguntas
     const preguntas = [
       {
         texto: "Which value guides your ADA journey?",
@@ -149,58 +122,94 @@
       }
     ];
 
+    // 5 resultados
     const resultados = [
-      { titulo:"You are BYRON, the Founder of Foundations",    descripcion:"You represent the beginning, mathematical principles and a solid base.",    imagen:"byron.png"    },
-      { titulo:"You are LOVELACE, the Visionary of Code",       descripcion:"You bring elegance, precision and creativity to every contract.",            imagen:"lovelace.png" },
-      { titulo:"You are PLUTUS, the Architect of Code",         descripcion:"Your mind is logical and creative, translating will into contracts.",         imagen:"plutus.png"  },
-      { titulo:"You are SHELLEY, the Guardian of Decentralization", descripcion:"You uphold the network silently, believing in collective power.",          imagen:"shelley.png"},
-      { titulo:"You are VOLTAIRE, the Oracle of Governance",    descripcion:"Your voice guides proposals and shapes Cardano's future.",               imagen:"voltaire.png"}
+      {
+        titulo: "You are BYRON, the Founder of Foundations",
+        descripcion: "You represent the beginning, mathematical principles and a solid base.",
+        imagen: "byron.png"
+      },
+      {
+        titulo: "You are LOVELACE, the Visionary of Code",
+        descripcion: "You bring elegance, precision and creativity to every contract.",
+        imagen: "lovelace.png"
+      },
+      {
+        titulo: "You are PLUTUS, the Architect of Code",
+        descripcion: "Your mind is logical and creative, translating will into contracts.",
+        imagen: "plutus.png"
+      },
+      {
+        titulo: "You are SHELLEY, the Guardian of Decentralization",
+        descripcion: "You uphold the network silently, believing in collective power.",
+        imagen: "shelley.png"
+      },
+      {
+        titulo: "You are VOLTAIRE, the Oracle of Governance",
+        descripcion: "Your voice guides proposals and shapes Cardano's future.",
+        imagen: "voltaire.png"
+      }
     ];
 
-    let respuestas = [], idx = 0;
+    // mapOpciones[preguntaIndex][opcionIndex] → índice en resultados
+    const mapOpciones = [
+      [2, 3, 4],  // Q1: logic→Plutus(2), decentralization→Shelley(3), evolution→Voltaire(4)
+      [0, 2, 3],  // Q2: Epochs→Byron(0), contracts→Plutus(2), Hydra→Shelley(3)
+      [2, 3, 4],  // Q3: builder→Plutus(2), guardian→Shelley(3), oracle→Voltaire(4)
+      [1, 3, 4],  // Q4: Lovelace(1), Shelley(3), Voltaire(4)
+      [0, 2, 4]   // Q5: HOSKY→Byron(0), SNEK→Plutus(2), SUPERIOR→Voltaire(4)
+    ];
 
-    function mostrarPregunta(){
+    let idx = 0;
+    let scores = [0,0,0,0,0];
+
+    function mostrarPregunta() {
       const q = preguntas[idx];
       document.getElementById("textoPregunta").innerText = q.texto;
       const ops = document.getElementById("opciones");
       ops.innerHTML = "";
-      q.opciones.forEach((o,i)=>{
-        const b = document.createElement("button");
-        b.innerText = o;
-        b.onclick = () => {
-          respuestas.push(i);
-          if(idx < preguntas.length - 1){
+      q.opciones.forEach((o, i) => {
+        const btn = document.createElement("button");
+        btn.innerText = o;
+        btn.onclick = () => {
+          // asigna punto al personaje mapeado
+          const personajeIdx = mapOpciones[idx][i];
+          scores[personajeIdx]++;
+          // siguiente o resultado
+          if (idx < preguntas.length - 1) {
             idx++;
             mostrarPregunta();
           } else {
             mostrarResultado();
           }
         };
-        ops.appendChild(b);
+        ops.appendChild(btn);
       });
     }
 
-    function mostrarResultado(){
+    function mostrarResultado() {
       document.getElementById("pregunta").style.display = "none";
-      const counts = respuestas.reduce((a,i)=>{ a[i]=(a[i]||0)+1; return a; },{});
-      const maxIdx = Object.keys(counts).reduce((a,b)=>counts[a]>=counts[b]?a:b);
+      // encuentra índice con máxima puntuación
+      const maxIdx = scores.indexOf(Math.max(...scores));
       const r = resultados[maxIdx];
-      document.getElementById("imagenResultado").src = r.imagen;
-      document.getElementById("imagenResultado").alt = r.titulo;
+      const img = document.getElementById("imagenResultado");
+      img.src = r.imagen;
+      img.alt = r.titulo;
       document.getElementById("tituloResultado").innerText = r.titulo;
       document.getElementById("descripcionResultado").innerText = r.descripcion;
       document.getElementById("resultado").style.display = "block";
     }
 
-    function reiniciar(){
-      respuestas = []; idx = 0;
+    function reiniciar() {
+      idx = 0;
+      scores = [0,0,0,0,0];
       document.getElementById("resultado").style.display = "none";
       document.getElementById("pregunta").style.display = "block";
       mostrarPregunta();
     }
 
-    function compartirEnX(){
-      const res = document.getElementById("tituloResultado").innerText.replace(/^You are\s+/i,"");
+    function compartirEnX() {
+      const res = document.getElementById("tituloResultado").innerText.replace(/^You are\s+/i, "");
       const text = `My Cardano result: ${res}. Take the test!`;
       window.open(
         `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(QUIZ_URL)}`
