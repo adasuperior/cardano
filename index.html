@@ -17,7 +17,8 @@
     }
     * { box-sizing: border-box; margin:0; padding:0 }
     body {
-      background: var(--bg); color: var(--txt);
+      background: var(--bg);
+      color: var(--txt);
       font-family: Arial, sans-serif;
       display:flex; flex-direction:column; align-items:center;
       padding:20px; min-height:100vh; text-align:center;
@@ -77,7 +78,7 @@
   </div>
 
   <script>
-    // TRES PREGUNTAS de ejemplo
+    // 5 preguntas
     const preguntas = [
       {
         texto: "Which value guides your ADA journey?",
@@ -102,10 +103,26 @@
           "Node and block guardian",
           "Future oracle of Catalyst"
         ]
+      },
+      {
+        texto: "If you could summon one ally, who would it be?",
+        opciones: [
+          "Byron, the structural founder",
+          "Ada Lovelace, visionary of code",
+          "Charles Hoskinson, the prophetic guide"
+        ]
+      },
+      {
+        texto: "Which of these Cardano memecoins will lead the ecosystem in 2025?",
+        opciones: [
+          "$HOSKY – the stray dog with a loyal army",
+          "$SNEK – the fast, viral snake",
+          "$BOOK – the sacred book of degenerates"
+        ]
       }
     ];
 
-    // CINCO RESULTADOS con PNG en la raíz
+    // 5 resultados
     const resultados = [
       {
         titulo: "You are BYRON, the Founder of Foundations",
@@ -142,14 +159,14 @@
       const ops = document.getElementById("opciones");
       ops.innerHTML = "";
       q.opciones.forEach((o,i) => {
-        const btn = document.createElement("button");
-        btn.innerText = o;
-        btn.onclick = () => {
+        const b = document.createElement("button");
+        b.innerText = o;
+        b.onclick = () => {
           respuestas.push(i);
           idx++;
           idx < preguntas.length ? mostrarPregunta() : mostrarResultado();
         };
-        ops.appendChild(btn);
+        ops.appendChild(b);
       });
     }
 
@@ -159,14 +176,12 @@
         a[i] = (a[i]||0) + 1;
         return a;
       }, {});
-      const winner = counts[0] >= Math.max(counts[1]||0, counts[2]||0)
-        ? 0
-        : counts[1] >= (counts[2]||0) ? 1 : 2;
-      // si hay empate, muestra índice 0–2; ajusta lógica si quieres
-      const r = resultados[winner];
+      // elegir el índice con más votos
+      const maxIdx = Object.keys(counts)
+        .reduce((a,b) => counts[a] >= counts[b] ? a : b);
+      const r = resultados[Number(maxIdx)];
       const img = document.getElementById("imagenResultado");
-      img.src = r.imagen;
-      img.alt = r.titulo;
+      img.src = r.imagen; img.alt = r.titulo;
       document.getElementById("tituloResultado").innerText = r.titulo;
       document.getElementById("descripcionResultado").innerText = r.descripcion;
       document.getElementById("resultado").style.display = "block";
@@ -180,16 +195,13 @@
     }
 
     function compartirEnX() {
-      const t = document.getElementById("tituloResultado")
+      const resultado = document.getElementById("tituloResultado")
         .innerText.replace(/^You are\s+/i, "");
-      window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          "My Cardano result: " + t
-        )}`
-      );
+      const url = "https://penascosa.github.io/cardano/";
+      const text = `My Cardano result: ${resultado}. Click here to take the test 👉 ${url}`;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`);
     }
 
-    // Arranca
     mostrarPregunta();
   </script>
 </body>
