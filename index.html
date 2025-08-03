@@ -17,8 +17,7 @@
     }
     * { box-sizing: border-box; margin:0; padding:0 }
     body {
-      background: var(--bg);
-      color: var(--txt);
+      background: var(--bg); color: var(--txt);
       font-family: Arial, sans-serif;
       display:flex; flex-direction:column; align-items:center;
       padding:20px; min-height:100vh; text-align:center;
@@ -42,20 +41,20 @@
       transition:background var(--trans),transform var(--trans);
       font-weight:bold;
     }
-    button:hover {
-      background:var(--prim-h); transform:translateY(-2px);
-    }
+    button:hover { background:var(--prim-h); transform:translateY(-2px) }
     .resultado img {
       display:block; margin:0 auto 15px;
       max-width:100%; border-radius:var(--radius);
     }
-    .resultado h2 {
-      font-size:1.75rem; margin-bottom:10px; text-transform:uppercase;
-    }
+    .resultado h2 { font-size:1.75rem; margin-bottom:10px; text-transform:uppercase }
     .resultado p { line-height:1.5 }
+    #retake a {
+      color:var(--prim); text-decoration:underline; font-weight:bold;
+      display:inline-block; margin-top:15px;
+    }
     @media(max-width:480px){
-      h1 { font-size:1.5rem }
-      button { flex:1 1 100% }
+      h1{font-size:1.5rem}
+      button{flex:1 1 100%}
     }
   </style>
 </head>
@@ -75,10 +74,12 @@
       <button onclick="compartirEnX()">Share on X</button>
       <button onclick="reiniciar()">Restart Quiz</button>
     </div>
+    <div id="retake">
+      <a href="https://penascosa.github.io/cardano/">👉 Click here to take the test again</a>
+    </div>
   </div>
 
   <script>
-    // 5 preguntas
     const preguntas = [
       {
         texto: "Which value guides your ADA journey?",
@@ -107,9 +108,9 @@
       {
         texto: "If you could summon one ally, who would it be?",
         opciones: [
-          "Byron, the structural founder",
-          "Ada Lovelace, visionary of code",
-          "Charles Hoskinson, the prophetic guide"
+          "Ada Lovelace, vision and elegance",
+          "Shelley, guardian of decentralization",
+          "Voltaire, oracle of governance"
         ]
       },
       {
@@ -117,89 +118,65 @@
         opciones: [
           "$HOSKY – the stray dog with a loyal army",
           "$SNEK – the fast, viral snake",
-          "$BOOK – the sacred book of degenerates"
+          "$SUPERIOR – the impetu of gods, born to dominate"
         ]
       }
     ];
 
-    // 5 resultados
     const resultados = [
-      {
-        titulo: "You are BYRON, the Founder of Foundations",
-        descripcion: "You represent the beginning, mathematical principles and a solid base.",
-        imagen: "byron.png"
-      },
-      {
-        titulo: "You are LOVELACE, the Visionary of Code",
-        descripcion: "You bring elegance, precision and creativity to every contract.",
-        imagen: "lovelace.png"
-      },
-      {
-        titulo: "You are PLUTUS, the Architect of Code",
-        descripcion: "Your mind is logical and creative, translating will into contracts.",
-        imagen: "plutus.png"
-      },
-      {
-        titulo: "You are SHELLEY, the Guardian of Decentralization",
-        descripcion: "You uphold the network silently, believing in collective power.",
-        imagen: "shelley.png"
-      },
-      {
-        titulo: "You are VOLTAIRE, the Oracle of Governance",
-        descripcion: "Your voice guides proposals and shapes Cardano's future.",
-        imagen: "voltaire.png"
-      }
+      { titulo:"You are BYRON, the Founder of Foundations",    descripcion:"You represent the beginning, mathematical principles and a solid base.",    imagen:"byron.png"    },
+      { titulo:"You are LOVELACE, the Visionary of Code",       descripcion:"You bring elegance, precision and creativity to every contract.",            imagen:"lovelace.png" },
+      { titulo:"You are PLUTUS, the Architect of Code",         descripcion:"Your mind is logical and creative, translating will into contracts.",         imagen:"plutus.png"  },
+      { titulo:"You are SHELLEY, the Guardian of Decentralization", descripcion:"You uphold the network silently, believing in collective power.",          imagen:"shelley.png"},
+      { titulo:"You are VOLTAIRE, the Oracle of Governance",    descripcion:"Your voice guides proposals and shapes Cardano's future.",               imagen:"voltaire.png"}
     ];
 
     let respuestas = [], idx = 0;
 
-    function mostrarPregunta() {
+    function mostrarPregunta(){
       const q = preguntas[idx];
       document.getElementById("textoPregunta").innerText = q.texto;
-      const ops = document.getElementById("opciones");
-      ops.innerHTML = "";
-      q.opciones.forEach((o,i) => {
-        const b = document.createElement("button");
+      const ops = document.getElementById("opciones"); ops.innerHTML="";
+      q.opciones.forEach((o,i)=>{
+        const b=document.createElement("button");
         b.innerText = o;
         b.onclick = () => {
           respuestas.push(i);
-          idx++;
-          idx < preguntas.length ? mostrarPregunta() : mostrarResultado();
+          if(idx < preguntas.length -1) {
+            idx++;
+            mostrarPregunta();
+          } else {
+            mostrarResultado();
+          }
         };
         ops.appendChild(b);
       });
     }
 
-    function mostrarResultado() {
-      document.getElementById("pregunta").style.display = "none";
-      const counts = respuestas.reduce((a,i) => {
-        a[i] = (a[i]||0) + 1;
-        return a;
-      }, {});
-      // elegir el índice con más votos
-      const maxIdx = Object.keys(counts)
-        .reduce((a,b) => counts[a] >= counts[b] ? a : b);
-      const r = resultados[Number(maxIdx)];
-      const img = document.getElementById("imagenResultado");
-      img.src = r.imagen; img.alt = r.titulo;
+    function mostrarResultado(){
+      document.getElementById("pregunta").style.display="none";
+      const counts = respuestas.reduce((a,i)=>{ a[i]=(a[i]||0)+1; return a; },{});
+      const maxIdx = Object.keys(counts).reduce((a,b)=>counts[a]>=counts[b]?a:b);
+      const r = resultados[maxIdx];
+      document.getElementById("imagenResultado").src = r.imagen;
+      document.getElementById("imagenResultado").alt = r.titulo;
       document.getElementById("tituloResultado").innerText = r.titulo;
       document.getElementById("descripcionResultado").innerText = r.descripcion;
-      document.getElementById("resultado").style.display = "block";
+      document.getElementById("resultado").style.display="block";
     }
 
-    function reiniciar() {
-      respuestas = []; idx = 0;
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("pregunta").style.display = "block";
+    function reiniciar(){
+      respuestas=[]; idx=0;
+      document.getElementById("resultado").style.display="none";
+      document.getElementById("pregunta").style.display="block";
       mostrarPregunta();
     }
 
-    function compartirEnX() {
-      const resultado = document.getElementById("tituloResultado")
-        .innerText.replace(/^You are\s+/i, "");
+    function compartirEnX(){
+      const res = document.getElementById("tituloResultado").innerText.replace(/^You are\s+/i,"");
       const url = "https://penascosa.github.io/cardano/";
-      const text = `My Cardano result: ${resultado}. Click here to take the test 👉 ${url}`;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`);
+      const text = `My Cardano result: ${res}. Click here to take the test 👉 ${url}`;
+      window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}`);
     }
 
     mostrarPregunta();
