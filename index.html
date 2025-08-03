@@ -17,44 +17,71 @@
     }
     * { box-sizing: border-box; margin:0; padding:0 }
     body {
-      background: var(--bg); color: var(--txt);
+      background: var(--bg);
+      color: var(--txt);
       font-family: Arial, sans-serif;
-      display:flex; flex-direction:column; align-items:center;
-      padding:20px; min-height:100vh; text-align:center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+      text-align: center;
     }
-    h1 { font-size:2rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:1px }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
     .pregunta, .resultado {
       background: var(--card);
-      padding:20px; border-radius:var(--radius);
-      box-shadow:0 4px 15px var(--shadow);
-      width:100%; max-width:600px; margin-bottom:20px;
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 15px var(--shadow);
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 20px;
     }
     #opciones {
-      display:flex; flex-wrap:wrap; gap:10px;
-      justify-content:center; margin-top:15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
     }
     button {
-      flex:1 1 calc(50% - 20px); min-width:120px;
-      padding:12px 20px; border:none;
-      background:var(--prim); color:var(--txt);
-      border-radius:var(--radius); cursor:pointer;
-      transition:background var(--trans),transform var(--trans);
-      font-weight:bold;
+      flex: 1 1 calc(50% - 20px);
+      min-width: 120px;
+      padding: 12px 20px;
+      border: none;
+      background: var(--prim);
+      color: var(--txt);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background var(--trans), transform var(--trans);
+      font-weight: bold;
     }
-    button:hover { background:var(--prim-h); transform:translateY(-2px) }
+    button:hover {
+      background: var(--prim-h);
+      transform: translateY(-2px);
+    }
     .resultado img {
-      display:block; margin:0 auto 15px;
-      max-width:100%; border-radius:var(--radius);
+      display: block;
+      margin: 0 auto 15px;
+      max-width: 100%;
+      border-radius: var(--radius);
     }
-    .resultado h2 { font-size:1.75rem; margin-bottom:10px; text-transform:uppercase }
-    .resultado p { line-height:1.5 }
-    #retake a {
-      color:var(--prim); text-decoration:underline; font-weight:bold;
-      display:inline-block; margin-top:15px;
+    .resultado h2 {
+      font-size: 1.75rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
     }
-    @media(max-width:480px){
-      h1{font-size:1.5rem}
-      button{flex:1 1 100%}
+    .resultado p {
+      line-height: 1.5;
+    }
+    @media(max-width: 480px) {
+      h1 { font-size: 1.5rem }
+      button { flex: 1 1 100% }
     }
   </style>
 </head>
@@ -74,53 +101,35 @@
       <button onclick="compartirEnX()">Share on X</button>
       <button onclick="reiniciar()">Restart Quiz</button>
     </div>
-    <div id="retake">
-      <a href="https://penascosa.github.io/cardano/">👉 Click here to take the test again</a>
-    </div>
   </div>
 
   <script>
     const preguntas = [
-      {
-        texto: "Which value guides your ADA journey?",
-        opciones: [
+      { texto:"Which value guides your ADA journey?", opciones:[
           "Mathematical reason and logic",
           "Absolute decentralization",
           "Critical thinking and evolution"
-        ]
-      },
-      {
-        texto: "If you ruled as a Cardano deity, what would your power be?",
-        opciones: [
+      ]},
+      { texto:"If you ruled as a Cardano deity, what would your power be?", opciones:[
           "Controlling all crypto Epochs",
           "Forging fair and eternal contracts",
           "Multiplying Hydra heads"
-        ]
-      },
-      {
-        texto: "What role would you play in the ecosystem?",
-        opciones: [
+      ]},
+      { texto:"What role would you play in the ecosystem?", opciones:[
           "Smart contract builder",
           "Node and block guardian",
           "Future oracle of Catalyst"
-        ]
-      },
-      {
-        texto: "If you could summon one ally, who would it be?",
-        opciones: [
+      ]},
+      { texto:"If you could summon one ally, who would it be?", opciones:[
           "Ada Lovelace, vision and elegance",
           "Shelley, guardian of decentralization",
           "Voltaire, oracle of governance"
-        ]
-      },
-      {
-        texto: "Which of these Cardano memecoins will lead the ecosystem in 2025?",
-        opciones: [
-          "$HOSKY – the stray dog with a loyal army",
-          "$SNEK – the fast, viral snake",
-          "$SUPERIOR – the impetu of gods, born to dominate"
-        ]
-      }
+      ]},
+      { texto:"Which memecoin will dominate in 2025?", opciones:[
+          "$HOSKY – stray dog with a loyal army",
+          "$SNEK – fast, viral snake",
+          "$SUPERIOR – impetu of gods, born to dominate"
+      ]}
     ];
 
     const resultados = [
@@ -140,9 +149,9 @@
       q.opciones.forEach((o,i)=>{
         const b=document.createElement("button");
         b.innerText = o;
-        b.onclick = () => {
+        b.onclick = ()=>{
           respuestas.push(i);
-          if(idx < preguntas.length -1) {
+          if(idx < preguntas.length-1) {
             idx++;
             mostrarPregunta();
           } else {
@@ -166,7 +175,7 @@
     }
 
     function reiniciar(){
-      respuestas=[]; idx=0;
+      respuestas = []; idx = 0;
       document.getElementById("resultado").style.display="none";
       document.getElementById("pregunta").style.display="block";
       mostrarPregunta();
@@ -174,8 +183,7 @@
 
     function compartirEnX(){
       const res = document.getElementById("tituloResultado").innerText.replace(/^You are\s+/i,"");
-      const url = "https://penascosa.github.io/cardano/";
-      const text = `My Cardano result: ${res}. Click here to take the test 👉 ${url}`;
+      const text = `My Cardano result: ${res}. Take the test!`;
       window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}`);
     }
 
