@@ -162,7 +162,8 @@
     function mostrarPregunta(){
       const q = preguntas[idx];
       document.getElementById("textoPregunta").innerText = q.texto;
-      const ops = document.getElementById("opciones"); ops.innerHTML="";
+      const ops = document.getElementById("opciones");
+      ops.innerHTML = "";
       q.opciones.forEach((o,i)=>{
         const b = document.createElement("button");
         b.innerText = o;
@@ -200,8 +201,10 @@
 
     function compartirEnX(){
       const res = document.getElementById("tituloResultado").innerText.replace(/^You are\s+/i,"");
-      const text = `My Cardano result: ${res}. Take the test 👉 ${QUIZ_URL}`;
-      window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}`);
+      const text = `My Cardano result: ${res}. Take the test!`;
+      window.open(
+        `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(QUIZ_URL)}`
+      );
     }
 
     mostrarPregunta();
