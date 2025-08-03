@@ -71,112 +71,93 @@
   </div>
 
   <script>
-    // datos del quiz
     const preguntas = [
       { texto:"Which value guides your ADA journey?", opciones:[
-        "Mathematical reason and logic (Cardano / Plutus)",
-        "Absolute decentralization (Shelley)",
-        "Critical thinking and evolution (Voltaire)"
+        "Mathematical reason and logic",
+        "Absolute decentralization",
+        "Critical thinking and evolution"
       ]},
       { texto:"If you ruled as a Cardano deity, what would your power be?", opciones:[
         "Controlling all crypto Epochs",
-        "Forging fair and eternal contracts (Plutus)",
-        "Multiplying Hydra heads to scale the chain"
+        "Forging fair and eternal contracts",
+        "Multiplying Hydra heads"
       ]},
       { texto:"What role would you play in the ecosystem?", opciones:[
-        "Smart contract builder (Goguen)",
-        "Node and block guardian (SPO)",
+        "Smart contract builder",
+        "Node and block guardian",
         "Future oracle of Catalyst"
-      ]},
-      { texto:"If you could summon one ally, who would it be?", opciones:[
-        "Ada Lovelace: vision, precision, and elegance",
-        "Hydra: power, speed, and regeneration",
-        "Charles: the founding prophet and eternal guide"
-      ]},
-      { texto:"Which Cardano era do you identify with most?", opciones:[
-        "Byron: the foundation of knowledge",
-        "Shelley: decentralization as divine law",
-        "Voltaire: your voice shapes the future"
-      ]},
-      { texto:"Which of these Cardano memecoins will lead the ecosystem in 2025?", opciones:[
-        "$HOSKY – the stray dog with a loyal army",
-        "$SNEK – the fast, viral snake",
-        "$BOOK – the sacred book of degenerates",
-        "$SUPERIOR – the mythological cult dominating the Cardano-verse"
       ]}
     ];
 
-    // resultados con ruta a PNG en carpeta /images
     const resultados = [
       {
         titulo:"You are BYRON, the Founder of Foundations",
-        descripcion:"You represent the beginning, mathematical principles, and the solid base upon which everything is built.",
-        imagen:"images/byron.png"
+        descripcion:"You represent the beginning, mathematical principles and a solid base.",
+        imagen:"byron.png"
+      },
+      {
+        titulo:"You are LOVELACE, the Visionary of Code",
+        descripcion:"You bring elegance, precision and creativity to every contract.",
+        imagen:"lovelace.png"
       },
       {
         titulo:"You are PLUTUS, the Architect of Code",
-        descripcion:"Your mind is logical, precise, and creative. You translate will into immutable contracts.",
-        imagen:"images/plutus.png"
-      },
-      {
-        titulo:"You are CHARLES, the Prophet of the Chain",
-        descripcion:"You are vision, origin, and future. Where others see blocks, you see decentralized civilizations.",
-        imagen:"images/charles.png"
+        descripcion:"Your mind is logical and creative, translating will into contracts.",
+        imagen:"plutus.png"
       },
       {
         titulo:"You are SHELLEY, the Guardian of Decentralization",
-        descripcion:"You lead without imposing, believing in collective power and decentralization.",
-        imagen:"images/shelley.png"
+        descripcion:"You uphold the network silently, believing in collective power.",
+        imagen:"shelley.png"
       },
       {
         titulo:"You are VOLTAIRE, the Oracle of Governance",
-        descripcion:"Your voice guides the ecosystem. You forge Cardano's future through ideas and proposals.",
-        imagen:"images/voltaire.png"
-      },
-      {
-        titulo:"You are HYDRA, the Strategist of Scalability",
-        descripcion:"You move with speed, strength and precision. You scale what others cannot.",
-        imagen:"images/hydra.png"
+        descripcion:"Your voice guides proposals and shapes Cardano's future.",
+        imagen:"voltaire.png"
       }
     ];
 
-    let respuestas = [], idx=0;
+    let respuestas = [], idx = 0;
 
     function mostrarPregunta(){
       const q = preguntas[idx];
       document.getElementById("textoPregunta").innerText = q.texto;
       const ops = document.getElementById("opciones");
-      ops.innerHTML="";
+      ops.innerHTML = "";
       q.opciones.forEach((o,i)=>{
-        const b=document.createElement("button");
-        b.innerText=o;
-        b.onclick=()=>{respuestas.push(i); idx++; idx<preguntas.length?mostrarPregunta():mostrarResultado()};
+        const b = document.createElement("button");
+        b.innerText = o;
+        b.onclick = ()=>{
+          respuestas.push(i);
+          idx++;
+          idx < preguntas.length ? mostrarPregunta() : mostrarResultado();
+        };
         ops.appendChild(b);
       });
     }
 
     function mostrarResultado(){
-      document.getElementById("pregunta").style.display="none";
-      const counts = respuestas.reduce((a,i)=>{a[i]=(a[i]||0)+1;return a},[]);
+      document.getElementById("pregunta").style.display = "none";
+      const counts = respuestas.reduce((a,i)=>{ a[i]=(a[i]||0)+1; return a },[]);
       const winner = counts.indexOf(Math.max(...counts));
       const r = resultados[winner];
       const img = document.getElementById("imagenResultado");
       img.src = r.imagen; img.alt = r.titulo;
       document.getElementById("tituloResultado").innerText = r.titulo;
       document.getElementById("descripcionResultado").innerText = r.descripcion;
-      document.getElementById("resultado").style.display="block";
+      document.getElementById("resultado").style.display = "block";
     }
 
     function reiniciar(){
-      respuestas=[]; idx=0;
-      document.getElementById("resultado").style.display="none";
-      document.getElementById("pregunta").style.display="block";
+      respuestas = []; idx = 0;
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("pregunta").style.display = "block";
       mostrarPregunta();
     }
 
     function compartirEnX(){
       const t = document.getElementById("tituloResultado").innerText.replace(/^You are\s+/i,"");
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`My Cardano result: ${t}. Yours?`)}"`);
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent("My Cardano result: "+t)}`);
     }
 
     mostrarPregunta();
